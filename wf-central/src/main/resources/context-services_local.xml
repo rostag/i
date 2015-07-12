@@ -32,10 +32,6 @@
 
         <!-- ==============================   DAO   ============================= -->
 
-        <bean id="merchantDao" class="org.wf.dp.dniprorada.dao.MerchantDaoImpl">
-            <property name="sessionFactory" ref="sessionFactory"/>
-        </bean>
-
         <bean id="documentAccessDao" class="org.wf.dp.dniprorada.dao.DocumentAccessDaoImpl">
             <property name="sessionFactory" ref="sessionFactory"/>
         </bean>

@@ -13,6 +13,7 @@
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
     <context:component-scan base-package="org.wf.dp.dniprorada" />
 
+    <bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
     
     <beans profile="prod">
 

@@ -43,14 +43,14 @@
 		<tomcat-jdbc.version>7.0.39</tomcat-jdbc.version>
 		<h2.database.version>1.3.176</h2.database.version>
 		<postgresql.version>9.4-1201-jdbc41</postgresql.version>
-		<springframework.version>4.0.6.RELEASE</springframework.version>
+		<springframework.version>4.0.8.RELEASE</springframework.version>
 		<cglib.version>2.2.2</cglib.version>
 		<commons.codec.version>1.8</commons.codec.version>
 		<hamcrest.version>1.1</hamcrest.version>
 		<jsonassert.version>1.2.3</jsonassert.version>
 		<guava.version>15.0</guava.version>
 		<easymock.version>3.0</easymock.version>
-		<hibernate.version>4.3.10.Final-fixed</hibernate.version>
+		<hibernate.version>4.3.10.Final</hibernate.version>
 		<usertype.core.version>3.2.0.GA</usertype.core.version>
 		<log4j.version>1.2.17</log4j.version>
 		<liquibase.version>3.3.3</liquibase.version>
@@ -59,6 +59,7 @@
 		<trove.version>1.0.2</trove.version>
 		<quartz.version>1.6.1</quartz.version>
 		<ehcache.version>2.10.0</ehcache.version>
+		<spring-data-jpa.version>1.8.1.RELEASE</spring-data-jpa.version>
 	</properties>
                 <!--igov.storage-static.version>1.0.0${parameter.sRevision}-SNAPSHOT</igov.storage-static.version>
                 <igov.storage-temp.version>1.0.0${parameter.sRevision}-SNAPSHOT</igov.storage-temp.version>
@@ -313,11 +314,23 @@
 				<version>${springframework.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-jpa</artifactId>
+				<version>${spring-data-jpa.version}</version>
+			</dependency>
+
 			<!-- Database -->
 
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
 

@@ -2,14 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jee="http://www.springframework.org/schema/jee"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
     <beans>
+        <jpa:repositories base-package="org.wf.dp.dniprorada.*.dao"
+                          factory-class="org.wf.dp.dniprorada.base.dao.BaseRepositoryFactoryBean"/>
+
         <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
             <property name="driverClass" value="${jdbc.driver}"/>
             <property name="url" value="${jdbc.url}"/>
@@ -17,22 +20,33 @@
             <property name="password" value="${jdbc.password}"/>
         </bean>
 
-        <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+            <property name="databasePlatform" value="${hibernate.dialect}"/>
+        </bean>
+
+        <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+            <property name="persistenceUnitName" value="entityManagerFactory"/>
             <property name="dataSource" ref="dataSource"/>
+            <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
             <property name="packagesToScan">
                 <array>
                     <value>org.wf.dp.dniprorada.base.model</value>
                     <value>org.wf.dp.dniprorada.model</value>
                 </array>
             </property>
-
-            <property name="hibernateProperties">
+            <property name="jpaProperties">
                 <props>
-                    <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                    <!--TODO: check this-->
                     <prop key="hibernate.globally_quoted_identifiers">${hibernate.globally_quoted_identifiers}</prop>
-                    <!--<prop key="hibernate.show_sql">true</prop>-->
+                    <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
                 </props>
             </property>
+        </bean>
+
+        <bean id="sessionFactory" class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
+            <property name="entityManagerFactory" ref="entityManagerFactory" />
         </bean>
 
         <bean id="transactionManager"
@@ -40,9 +54,11 @@
             <property name="sessionFactory" ref="sessionFactory"/>
         </bean>
 
+        <tx:annotation-driven />
+
 
         <!-- ===========================   TRANSACTIONS   ========================= -->
-
+        <!--TODO: update-->
         <tx:advice id="txAdvice" transaction-manager="transactionManager">
             <tx:attributes>
                 <tx:method name="get*" read-only="true"/>
@@ -66,14 +82,10 @@
             <property name="sessionFactory" ref="sessionFactory"/>
         </bean>
 
-        <bean id="flowSlotDao" class="org.wf.dp.dniprorada.base.dao.FlowSlotDaoImpl">
-            <property name="sessionFactory" ref="sessionFactory"/>
-        </bean>
-
         <bean id="flowSlotTicketDao" class="org.wf.dp.dniprorada.base.dao.FlowSlotTicketDaoImp">
             <property name="sessionFactory" ref="sessionFactory"/>
         </bean>
-        
+
         <bean id="accessDataDao" class="org.wf.dp.dniprorada.base.dao.AccessDataDaoImpl">
             <!--property name="sessionFactory" ref="sessionFactory"/-->
         </bean>

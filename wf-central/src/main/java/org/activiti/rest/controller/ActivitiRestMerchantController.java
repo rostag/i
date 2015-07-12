@@ -1,11 +1,6 @@
 package org.activiti.rest.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +15,9 @@ import org.wf.dp.dniprorada.model.Merchant;
 import org.wf.dp.dniprorada.model.SubjectOrgan;
 import org.wf.dp.dniprorada.viewobject.MerchantVO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/merchant")
 public class ActivitiRestMerchantController {
@@ -27,7 +25,6 @@ public class ActivitiRestMerchantController {
 	//final static Logger LOG = Logger.getLogger(ActivitiRestMerchController.class);
 
 	@Autowired	
-	@Qualifier(value = "merchantDao")		
 	private MerchantDao merchantDao;
 
 	@Autowired
@@ -36,13 +33,13 @@ public class ActivitiRestMerchantController {
 	@RequestMapping(value = "/getMerchants", method = RequestMethod.GET)
 	public @ResponseBody
 	ResponseEntity getMerchants(){
-		return JsonRestUtils.toJsonResponse(toVO(merchantDao.getAll()));
+		return JsonRestUtils.toJsonResponse(toVO(merchantDao.findAll()));
 	}
 
 	@RequestMapping(value = "/getMerchant", method = RequestMethod.GET)
 	public @ResponseBody
 	ResponseEntity getMerchant(@RequestParam(value = "sID") String sID){
-		Merchant merchant = merchantDao.getMerchant(sID);
+		Merchant merchant = merchantDao.findBySID(sID);
 		if (merchant == null) {
 			return new ResponseEntity("Merchant with sID=" + sID + " is not found!", HttpStatus.NOT_FOUND);
 		}
@@ -52,7 +49,7 @@ public class ActivitiRestMerchantController {
 
 	@RequestMapping(value = "/removeMerchant", method = RequestMethod.DELETE)
 	public ResponseEntity deleteMerchant(@RequestParam(value = "sID") String id){
-      return new ResponseEntity(merchantDao.deleteMerchant(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+      return new ResponseEntity(merchantDao.deleteBySID(id) ? HttpStatus.OK : HttpStatus.NOT_FOUND);
 	}
 	
 	@RequestMapping(value = "/setMerchant", method = RequestMethod.POST)
@@ -64,7 +61,7 @@ public class ActivitiRestMerchantController {
 			  @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
 			  @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess) {
 
-		Merchant merchant = nID != null ? merchantDao.getById(nID) : new Merchant();
+		Merchant merchant = nID != null ? merchantDao.findOneExpected(nID) : new Merchant();
 
 		if (merchant == null) {
 			merchant = new Merchant();
@@ -91,7 +88,7 @@ public class ActivitiRestMerchantController {
 			merchant.setsURL_CallbackPaySuccess(null);
 		}
 
-		merchantDao.saveOrUpdate(merchant);
+		merchantDao.save(merchant);
 //		try {
 //			merchantDao.saveOrUpdate(merchant);
 //		}

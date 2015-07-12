@@ -123,7 +123,7 @@ public class FlowService implements ApplicationContextAware {
       oFlowSlotTicket.setnID_Subject(nID_Subject);
       oFlowSlotTicket.setnID_Task_Activiti(nID_Task_Activiti);
 
-      FlowSlot flowSlot = baseEntityDao.getById(FlowSlot.class, nID_FlowSlot);
+      FlowSlot flowSlot = flowSlotDao.findOneExpected(nID_FlowSlot);
 
       oFlowSlotTicket.setoFlowSlot(flowSlot);
       oFlowSlotTicket.setsDateStart(flowSlot.getsDate());
@@ -196,7 +196,7 @@ public class FlowService implements ApplicationContextAware {
          }
       }
 
-      flowSlotDao.deleteAll(flowSlotsToDelete);
+      flowSlotDao.delete(flowSlotsToDelete);
       return res;
    }
 

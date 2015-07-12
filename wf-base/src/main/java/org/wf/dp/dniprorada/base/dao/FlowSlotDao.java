@@ -1,18 +1,13 @@
 package org.wf.dp.dniprorada.base.dao;
 
 import org.joda.time.DateTime;
+import org.springframework.data.jpa.repository.Query;
 import org.wf.dp.dniprorada.base.model.FlowSlot;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-/**
- * User: goodg_000
- * Date: 21.06.2015
- * Time: 15:44
- */
-public interface FlowSlotDao extends EntityDao<FlowSlot> {
+public interface FlowSlotDao extends BaseRepository<FlowSlot>, FlowSlotCustomDao {
 
    /**
     * Gets flow slots by service data ID ordered by date in given interval
@@ -21,6 +16,7 @@ public interface FlowSlotDao extends EntityDao<FlowSlot> {
     * @param stopDate end date of interval (exclusive)
     * @return flow slots
     */
+   @Query("select f from FlowSlot f where f.flow.nID_ServiceData = ?1 and (f.sDate >= ?2 and f.sDate  < ?3)")
    List<FlowSlot> findFlowSlotsByServiceData(Long nID_ServiceData, DateTime startDate, DateTime stopDate);
 
    /**
@@ -30,6 +26,7 @@ public interface FlowSlotDao extends EntityDao<FlowSlot> {
     * @param stopDate end date of interval (exclusive)
     * @return flow slots
     */
+   @Query("select f from FlowSlot f where f.flow.id = ?1 and (f.sDate >= ?2 and f.sDate  < ?3)")
    List<FlowSlot> findFlowSlotsByFlow(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate);
 
    /**
@@ -39,15 +36,6 @@ public interface FlowSlotDao extends EntityDao<FlowSlot> {
     * @param stopDate stop date of interval (inclusive)
     * @return set of date times
     */
+   @Query("select f.sDate from FlowSlot f where f.flow.id = ?1 and f.sDate between ?2 and ?3")
    Set<DateTime> findFlowSlotsDates(Long nID_Flow_ServiceData, DateTime startDate, DateTime stopDate);
-
-   /**
-    * Updates slots with new duration
-    * @param nID_Flow_ServiceData
-    * @param dates
-    * @param newDuration
-    * @return count of slots updated
-    */
-   int updateSlots(Long nID_Flow_ServiceData, Collection<DateTime> dates, String newDuration);
-
 }

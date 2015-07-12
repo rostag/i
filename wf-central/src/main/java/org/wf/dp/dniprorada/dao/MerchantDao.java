@@ -1,13 +1,12 @@
 package org.wf.dp.dniprorada.dao;
 
-import org.wf.dp.dniprorada.base.dao.EntityDao;
+import org.wf.dp.dniprorada.base.dao.BaseRepository;
 import org.wf.dp.dniprorada.model.Merchant;
 
-import java.util.List;
+public interface MerchantDao extends BaseRepository<Merchant> {
 
-public interface MerchantDao extends EntityDao<Merchant> {
+   Merchant findBySID(String sID);
 
-   Merchant getMerchant(String sID);
-   boolean deleteMerchant(String sID);
+   boolean deleteBySID(String sID);
 
 }

@@ -85,7 +85,7 @@ public class DefaultFlowSlotScheduler extends BaseFlowSlotScheduler {
             for (FlowSlot slot : slots) {
                if (!existingDates.contains(slot.getsDate())) {
                   slot.setFlow(flow);
-                  flowSlotDao.saveOrUpdate(slot);
+                  flowSlotDao.save(slot);
 
                   res.add(slot);
                }
