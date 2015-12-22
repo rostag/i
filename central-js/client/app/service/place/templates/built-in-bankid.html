@@ -224,7 +224,7 @@
               </div>
 
               <div class="col-md-4 validation-message"
-                   ng-if="form.$submitted"``
+                   ng-if="form.$submitted"
                    ng-messages="form[property.id].$error">
                 <div ng-message="required">Необхідно заповнити.</div>
                 <div ng-message="pattern">Значення має бути числом.</div>
@@ -237,7 +237,7 @@
                 <div ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                   х-місяців, х-років.
                 </div>
-                <div ng-message="CustomFormat">{{ form[property.id].lastErrorMessage }}</div>
+                <div ng-message="customformatnumberkadastr">{{ form[property.id].lastErrorMessage }}</div>
                 <div ng-message="CodeKVED">Такого КВЕД не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeEDRPOU">Такий код ЄДРПОУ не існує - (ви не можете вписувати літери)</div>
                 <div ng-message="CodeMFO">Такого коду банку не існує - (ви не можете вписувати літери)</div>

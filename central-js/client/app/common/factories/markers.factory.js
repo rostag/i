@@ -79,9 +79,9 @@ angular.module('app').factory('MarkersFactory', function() {
         //aField_ID: ['house_number', 'gas_number', 'coolwater_number', 'hotwater_number', 'waterback_number', 'warming_number', 'electricity_number', 'garbage_number'],
         sMessage: 'Перевірте правильність уведеного номеру (літери не дозволені до заповнення)'
       }
-      //,CustomFormat_NumberKadastr: { //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
-      ,CustomFormat_1: { //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
-        aField_ID: ['landNumb'],
+      //унифицированный валидатор проверки кодов/номеров(с кастомным сообщением), с заданным количеством и последовательностью знаков
+      ,CustomFormat_NumberKadastr: {
+        aField_ID: ['landNumb', 'landAddress'],
         sFormat: 'хххххххххх:хх:ххх:хххх',
         sMessage: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
       }
@@ -104,8 +104,10 @@ angular.module('app').factory('MarkersFactory', function() {
     },
     grepByPrefix: function (section, prefix) {
       return _.transform(_.pairs(markers[section]), function (result, value) {
-        if (value[0].indexOf(prefix) === 0) result.push(value[1]);
+        if (value[0].indexOf(prefix) === 0) {
+          result.push(value[1]);
+        }
       });
     }
-  }
+  };
 });

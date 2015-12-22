@@ -77,8 +77,6 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
   };
 
   self.setValidatorByMarker = function(marker, markerName, formField, immediateValidation, forceValidation) {
-    if (markerName.indexOf('CustomFormat_') == 0)
-      markerName = 'CustomFormat'; //in order to use different format rules at the same time
     var keyByMarkerName = self.validatorNameByMarkerName[markerName];
     var fieldNameIsListedInMarker = formField && formField.$name && _.indexOf(marker.aField_ID, formField.$name) !== -1;
     var existingValidator = formField && formField.$validators && formField.$validators[keyByMarkerName];
@@ -126,7 +124,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     NumberFractionalBetween: 'numberfractionalbetween',
     Numbers_Accounts: 'numbersaccounts',
     DateElapsed_1: 'dateofbirth',
-    CustomFormat: 'CustomFormat',
+    CustomFormat_NumberKadastr: 'customformatnumberkadastr',
     FileSign: 'FileSign'
   };
 
@@ -563,7 +561,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     },
 
     /**
-     'CustomFormat' - кастомный формат номера
+     'CustomFormat_NumberKadastr' - кастомный формат номера
      Текст помилки: 'Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх'
      Формат маркера:
      CustomFormat_NumberKadastr: {
@@ -576,7 +574,7 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
      При неправильном введении выводить ошибку "Невірний кадастровий номер,
      введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх"
      }*/
-    'CustomFormat': function (modelValue, viewValue, options) {
+    'CustomFormat_NumberKadastr': function (modelValue, viewValue, options) {
       console.log("viewValue=" + viewValue);
       if (modelValue === null || modelValue === '') {
         return true;
